@@ -13,9 +13,9 @@ function setProgress(value) {
 }
 
 function animateProgress() {
-  // Smooth climb to 100% in ~5 seconds (target: 50 steps of ~100ms each)
-  const step = 100 / 50;
-  if (progress < 100) {
+  // Smooth climb to 90% in 4.5 seconds, then wait for load event
+  const step = 90 / 45;
+  if (progress < 90) {
     setProgress(progress + step);
   } else {
     clearInterval(progressInterval);
@@ -28,22 +28,44 @@ function completeLoading() {
     clearInterval(progressInterval);
     progressInterval = null;
   }
-  // Snap to 100%
-  setProgress(100);
-  // Hide loader after a brief pause so user sees 100%
-  setTimeout(() => {
-    if (loader) loader.classList.add('hidden');
-  }, 300);
+  // Animate from current progress to 100% smoothly
+  const remaining = 100 - progress;
+  const steps = 10;
+  const stepSize = remaining / steps;
+  let count = 0;
+  const finishInterval = setInterval(() => {
+    count++;
+    setProgress(progress + stepSize * count);
+    if (count >= steps) {
+      clearInterval(finishInterval);
+      setProgress(100);
+      // Hide loader after user sees 100%
+      setTimeout(() => {
+        if (loader) loader.classList.add('hidden');
+      }, 400);
+    }
+  }, 50);
 }
 
-// Start progress animation – fills to 100% in ~5 seconds (50 steps × 100ms)
+// Start progress animation – fills to 90% over 4.5 seconds (45 steps × 100ms)
 progressInterval = setInterval(animateProgress, 100);
 
-// When everything is fully loaded (images, fonts, etc.)
-window.addEventListener('load', completeLoading);
+// Only complete after at least 5 seconds have passed
+let loadEventFired = false;
+let minTimeReached = false;
 
-// Fallback: force complete after 6 seconds
-setTimeout(completeLoading, 6000);
+window.addEventListener('load', () => {
+  loadEventFired = true;
+  if (minTimeReached) completeLoading();
+});
+
+setTimeout(() => {
+  minTimeReached = true;
+  if (loadEventFired) completeLoading();
+}, 5000);
+
+// Fallback: force complete after 7 seconds
+setTimeout(completeLoading, 7000);
 
 // ===== Live Views Counter =====
 const viewsDisplay = document.getElementById('views-count');
