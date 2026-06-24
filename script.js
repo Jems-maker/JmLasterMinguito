@@ -8,8 +8,9 @@ let progressInterval = null;
 
 function setProgress(value) {
   progress = Math.min(value, 100);
-  if (progressBar) progressBar.style.width = progress + '%';
-  if (progressText) progressText.textContent = progress + '%';
+  const rounded = Math.round(progress);
+  if (progressBar) progressBar.style.width = rounded + '%';
+  if (progressText) progressText.textContent = rounded + '%';
 }
 
 function animateProgress() {
@@ -71,32 +72,25 @@ setTimeout(completeLoading, 5000);
 const viewsDisplay = document.getElementById('views-count');
 const viewsBadge = document.getElementById('views-badge');
 
-// Use counterapi.dev — free, no auth, persistent real hit counter
-const COUNTER_NAMESPACE = 'jemsminguito';
-const COUNTER_KEY = 'portfolio-views';
-
 async function updateLiveViews() {
   try {
-    // Hit the counter — increments on each page visit and returns total
-    const res = await fetch(`https://counterapi.dev/api/${COUNTER_NAMESPACE}/${COUNTER_KEY}/hit`);
+    // POST = increment on each visit, returns new total
+    const res = await fetch('/api/views', { method: 'POST' });
     const data = await res.json();
-    const count = data.value ?? data.count ?? 0;
+    const count = data.count ?? 0;
     if (viewsDisplay) viewsDisplay.textContent = count;
+    localStorage.setItem('portfolio-cached-views', count);
     return count;
   } catch {
-    // Fallback: show cached count or dash
+    // Fallback to cached value
     const cached = parseInt(localStorage.getItem('portfolio-cached-views') || '0');
     if (viewsDisplay) viewsDisplay.textContent = cached || '—';
     return cached;
   }
 }
 
-// Run on page load
 let totalViewers = 0;
-updateLiveViews().then(count => {
-  totalViewers = count;
-  localStorage.setItem('portfolio-cached-views', count);
-});
+updateLiveViews().then(count => { totalViewers = count; });
 
 // ===== Views Badge Click - Show Dropdown =====
 let viewsDropdown = null;
