@@ -29,13 +29,13 @@ function completeLoading() {
     progressInterval = null;
   }
   // Animate from current progress to 100% smoothly
-  const remaining = 100 - progress;
+  const startProgress = progress;
+  const remaining = 100 - startProgress;
   const steps = 10;
-  const stepSize = remaining / steps;
   let count = 0;
   const finishInterval = setInterval(() => {
     count++;
-    setProgress(progress + stepSize * count);
+    setProgress(startProgress + (remaining / steps) * count);
     if (count >= steps) {
       clearInterval(finishInterval);
       setProgress(100);
@@ -67,44 +67,36 @@ setTimeout(() => {
 // Fallback: force complete after 5 seconds
 setTimeout(completeLoading, 5000);
 
-setTimeout(() => {
-  minTimeReached = true;
-  if (loadEventFired) completeLoading();
-}, 5000);
-
-// Fallback: force complete after 7 seconds
-setTimeout(completeLoading, 7000);
-
 // ===== Live Views Counter =====
 const viewsDisplay = document.getElementById('views-count');
 const viewsBadge = document.getElementById('views-badge');
 
-function updateLiveViews() {
-  let viewerId = localStorage.getItem('portfolio-viewer-id');
-  if (!viewerId) {
-    // First visit: generate a unique ID and register this viewer
-    viewerId = 'viewer-' + Date.now() + '-' + Math.random().toString(36).substr(2, 9);
-    localStorage.setItem('portfolio-viewer-id', viewerId);
-    localStorage.setItem('portfolio-viewed', 'true');
+// Use counterapi.dev — free, no auth, persistent real hit counter
+const COUNTER_NAMESPACE = 'jemsminguito';
+const COUNTER_KEY = 'portfolio-views';
+
+async function updateLiveViews() {
+  try {
+    // Hit the counter — increments on each page visit and returns total
+    const res = await fetch(`https://counterapi.dev/api/${COUNTER_NAMESPACE}/${COUNTER_KEY}/hit`);
+    const data = await res.json();
+    const count = data.value ?? data.count ?? 0;
+    if (viewsDisplay) viewsDisplay.textContent = count;
+    return count;
+  } catch {
+    // Fallback: show cached count or dash
+    const cached = parseInt(localStorage.getItem('portfolio-cached-views') || '0');
+    if (viewsDisplay) viewsDisplay.textContent = cached || '—';
+    return cached;
   }
-
-  // Count total unique viewers stored in localStorage
-  // Each new viewer gets their own entry
-  const viewerKey = 'portfolio-viewer-list';
-  let viewersList = JSON.parse(localStorage.getItem(viewerKey) || '[]');
-
-  if (!viewersList.includes(viewerId)) {
-    viewersList.push(viewerId);
-    localStorage.setItem(viewerKey, JSON.stringify(viewersList));
-  }
-
-  const count = viewersList.length;
-  if (viewsDisplay) viewsDisplay.textContent = count;
-  return count;
 }
 
 // Run on page load
-const totalViewers = updateLiveViews();
+let totalViewers = 0;
+updateLiveViews().then(count => {
+  totalViewers = count;
+  localStorage.setItem('portfolio-cached-views', count);
+});
 
 // ===== Views Badge Click - Show Dropdown =====
 let viewsDropdown = null;
