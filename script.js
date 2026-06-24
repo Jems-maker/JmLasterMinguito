@@ -74,15 +74,14 @@ const viewsBadge = document.getElementById('views-badge');
 
 async function updateLiveViews() {
   try {
-    // POST = increment on each visit, returns new total
-    const res = await fetch('/api/views', { method: 'POST' });
+    // api.counterapi.dev/v1 — free, no auth, persistent
+    const res = await fetch('https://api.counterapi.dev/v1/jemsminguito/portfolio/up');
     const data = await res.json();
     const count = data.count ?? 0;
     if (viewsDisplay) viewsDisplay.textContent = count;
     localStorage.setItem('portfolio-cached-views', count);
     return count;
   } catch {
-    // Fallback to cached value
     const cached = parseInt(localStorage.getItem('portfolio-cached-views') || '0');
     if (viewsDisplay) viewsDisplay.textContent = cached || '—';
     return cached;
