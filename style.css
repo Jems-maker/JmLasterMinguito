@@ -36,7 +36,7 @@
 .loader-brand {
   font-size: 1.5rem;
   font-weight: 700;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.8px;
   color: var(--text);
 }
 .loader-progress-track {
@@ -94,12 +94,14 @@
 html { scroll-behavior: smooth; }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Geist', 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
   background: var(--bg);
   color: var(--text);
   line-height: 1.6;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: 'ss01', 'ss02', 'cv01', 'cv03';
 }
 
 /* ===== Navbar ===== */
@@ -120,12 +122,12 @@ body {
 }
 .nav-logo {
   font-weight: 600; color: var(--text); text-decoration: none;
-  font-size: 1.1rem; letter-spacing: -0.5px;
+  font-size: 1.1rem; letter-spacing: -0.8px;
 }
 .nav-links { display: flex; gap: 32px; list-style: none; }
 .nav-link {
   color: var(--text-muted); text-decoration: none;
-  font-size: 0.9rem; transition: var(--transition);
+  font-size: 0.875rem; letter-spacing: -0.1px; transition: var(--transition);
 }
 .nav-link:hover, .nav-link.active { color: var(--text); }
 
@@ -242,7 +244,7 @@ body {
 .section { padding: 100px 0; }
 .section-title {
   font-size: 1.5rem; font-weight: 600; margin-bottom: 40px;
-  letter-spacing: -0.5px;
+  letter-spacing: -0.8px;
 }
 
 .card {
@@ -291,10 +293,11 @@ body {
 
 .hero-title {
   font-size: clamp(2rem, 5vw, 3rem); font-weight: 700;
-  letter-spacing: -1px; margin-bottom: 8px; line-height: 1.2;
+  letter-spacing: -1.5px; margin-bottom: 8px; line-height: 1.1;
 }
 .hero-role {
   font-size: 1.1rem; color: var(--text-muted); margin-bottom: 24px;
+  letter-spacing: -0.2px;
 }
 .hero-description {
   font-size: 1rem; color: var(--text-muted); margin-bottom: 32px;
@@ -609,7 +612,7 @@ body {
 }
 .chatbot-input-area input {
   flex: 1; background: var(--bg-card); border: 1px solid var(--border);
-  padding: 8px 12px; border-radius: 50px; color: var(--text); font-family: inherit; font-size: 0.85rem;
+  padding: 8px 12px; border-radius: 50px; color: var(--text); font-family: 'Geist', 'Inter', ui-sans-serif, sans-serif; font-size: 0.85rem;
 }
 .chatbot-input-area input:focus { outline: none; border-color: var(--border-hover); }
 .chatbot-input-area button {
