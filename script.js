@@ -13,8 +13,8 @@ function setProgress(value) {
 }
 
 function animateProgress() {
-  // Smooth climb to 90% in 4.5 seconds, then wait for load event
-  const step = 90 / 45;
+  // Smooth climb to 90% in 2.7 seconds (27 steps × 100ms)
+  const step = 90 / 27;
   if (progress < 90) {
     setProgress(progress + step);
   } else {
@@ -47,10 +47,10 @@ function completeLoading() {
   }, 50);
 }
 
-// Start progress animation – fills to 90% over 4.5 seconds (45 steps × 100ms)
+// Start progress animation – fills to 90% over 2.7 seconds (27 steps × 100ms)
 progressInterval = setInterval(animateProgress, 100);
 
-// Only complete after at least 5 seconds have passed
+// Only complete after at least 3 seconds have passed
 let loadEventFired = false;
 let minTimeReached = false;
 
@@ -58,6 +58,14 @@ window.addEventListener('load', () => {
   loadEventFired = true;
   if (minTimeReached) completeLoading();
 });
+
+setTimeout(() => {
+  minTimeReached = true;
+  if (loadEventFired) completeLoading();
+}, 3000);
+
+// Fallback: force complete after 5 seconds
+setTimeout(completeLoading, 5000);
 
 setTimeout(() => {
   minTimeReached = true;
