@@ -392,6 +392,13 @@ body {
   white-space: nowrap;
 }
 
+/* ===== Navbar scroll state ===== */
+.scrolled {
+  background: color-mix(in srgb, var(--color-bg-card) 95%, transparent) !important;
+  border-color: var(--color-border) !important;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+}
+
 /* ===== Mobile Nav ===== */
 @media (max-width: 768px) {
   .mobile-nav-links {
