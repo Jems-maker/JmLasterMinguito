@@ -56,7 +56,7 @@ export default function Navbar() {
     <>
       <nav
         ref={navbarRef}
-        className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-48px)] max-w-[720px]
+        className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] w-[calc(100%-48px)] max-w-[720px] md:max-w-[1000px]
           bg-[color-mix(in_srgb,var(--color-bg-card)_80%,transparent)]
           backdrop-blur-[16px] border border-[color-mix(in_srgb,var(--color-border)_60%,transparent)]
           rounded-xl px-2 transition-all duration-300"
