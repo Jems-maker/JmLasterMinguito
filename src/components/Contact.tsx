@@ -1,6 +1,28 @@
 "use client";
 
+import { useState } from "react";
+
 export default function Contact() {
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setTimeout(() => {
+      setIsSubmitting(false);
+      setSubmitted(true);
+      setFormData({ name: "", email: "", message: "" });
+      setTimeout(() => setSubmitted(false), 3000);
+    }, 1200);
+  };
+
   return (
     <section id="contact" className="section reveal">
       <div className="max-w-[1000px] mx-auto px-6">
@@ -43,8 +65,106 @@ export default function Contact() {
             <span>Facebook</span>
           </a>
         </div>
+
+        {/* macOS Dark Mode Terminal */}
+        <div className="mt-16 reveal-sm" style={{ transitionDelay: "0.4s" }}>
+          <div className="terminal-window">
+            {/* Title Bar */}
+            <div className="terminal-titlebar">
+              <div className="terminal-dots" role="img" aria-label="Window controls">
+                <span className="terminal-dot terminal-dot-red" title="Close" />
+                <span className="terminal-dot terminal-dot-yellow" title="Minimize" />
+                <span className="terminal-dot terminal-dot-green" title="Maximize" />
+              </div>
+              <span className="terminal-title">contact.sh — bash</span>
+            </div>
+
+            {/* Terminal Body */}
+            <div className="terminal-body">
+              <form onSubmit={handleSubmit}>
+                <div className="terminal-line">
+                  <span className="terminal-prompt">$</span>
+                  <span className="terminal-label">./name</span>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="your name"
+                    className="terminal-input"
+                    required
+                    aria-label="Name"
+                  />
+                </div>
+
+                <div className="terminal-line">
+                  <span className="terminal-prompt">$</span>
+                  <span className="terminal-label">./email</span>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="your@email.com"
+                    className="terminal-input"
+                    required
+                    aria-label="Email"
+                  />
+                </div>
+
+                <div className="terminal-line" style={{ alignItems: "flex-start" }}>
+                  <span className="terminal-prompt" style={{ marginTop: "4px" }}>$</span>
+                  <span className="terminal-label">./message</span>
+                  <textarea
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="tell me about your project"
+                    className="terminal-textarea"
+                    rows={4}
+                    required
+                    aria-label="Message"
+                  />
+                </div>
+
+                <div className="terminal-button-row">
+                  <button
+                    type="submit"
+                    className="terminal-submit-btn"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <span className="terminal-loading">
+                        <span className="terminal-loading-dot" />
+                        <span>sending...</span>
+                      </span>
+                    ) : submitted ? (
+                      <span className="terminal-success">
+                        <CheckIcon />
+                        <span>✓ message sent!</span>
+                      </span>
+                    ) : (
+                      <span className="terminal-btn-text">
+                        <span className="terminal-chevron">❯</span>
+                        <span>./send_message.sh</span>
+                      </span>
+                    )}
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
+  );
+}
+
+function CheckIcon() {
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
   );
 }
 
