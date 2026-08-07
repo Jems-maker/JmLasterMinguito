@@ -359,7 +359,7 @@ body {
 }
 
 /* ===== Loader Pulse ===== */
-/* ===== macOS Terminal ===== */
+/* ===== macOS Contact Window ===== */
 .terminal-window {
   background: #1a1b26;
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -437,86 +437,74 @@ body {
 
 .terminal-title {
   font-family: var(--font-sans);
-  font-size: 0.8rem;
-  color: rgba(255, 255, 255, 0.35);
+  font-size: 0.84rem;
+  color: rgba(255, 255, 255, 0.58);
   letter-spacing: 0.2px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .terminal-body {
-  padding: 20px 24px 24px;
-  font-family: var(--font-mono);
+  padding: 24px;
+  font-family: var(--font-sans);
 }
 
 .terminal-line {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 12px;
-}
-
-.terminal-prompt {
-  color: #28c840;
-  font-size: 0.88rem;
-  font-weight: 600;
-  flex-shrink: 0;
-  font-family: var(--font-mono);
-  user-select: none;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
 }
 
 .terminal-label {
-  color: #7aa2f7;
+  color: rgba(255, 255, 255, 0.78);
   font-size: 0.84rem;
-  font-family: var(--font-mono);
-  flex-shrink: 0;
-  user-select: none;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  line-height: 1.3;
 }
 
 .terminal-input,
 .terminal-textarea {
-  background: transparent;
-  border: none;
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: var(--radius);
   outline: none;
-  color: rgba(255, 255, 255, 0.85);
-  font-family: var(--font-mono);
-  font-size: 0.84rem;
+  color: #171717;
+  font-family: var(--font-sans);
+  font-size: 0.95rem;
   width: 100%;
-  padding: 2px 0;
-  transition: color 0.2s ease;
+  padding: 12px 14px;
+  line-height: 1.5;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
 }
 
 .terminal-input::placeholder,
 .terminal-textarea::placeholder {
-  color: rgba(255, 255, 255, 0.2);
-  font-style: italic;
+  color: #7a7a7a;
   transition: color 0.2s ease;
+}
+
+.terminal-input:focus,
+.terminal-textarea:focus {
+  background: #ffffff;
+  border-color: rgba(122, 162, 247, 0.85);
+  box-shadow: 0 0 0 3px rgba(122, 162, 247, 0.18);
 }
 
 .terminal-input:focus::placeholder,
 .terminal-textarea:focus::placeholder {
-  color: rgba(255, 255, 255, 0.35);
+  color: #9a9a9a;
 }
 
 .terminal-textarea {
   resize: vertical;
-  min-height: 60px;
-  line-height: 1.6;
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: var(--radius-sm);
-  padding: 8px 10px;
-  margin-top: 2px;
-  transition: border-color 0.2s ease, background 0.2s ease;
-}
-
-.terminal-textarea:focus {
-  border-color: rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.02);
+  min-height: 130px;
 }
 
 .terminal-button-row {
   display: flex;
   justify-content: flex-end;
-  margin-top: 20px;
+  margin-top: 22px;
   padding-top: 16px;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
 }
@@ -525,13 +513,16 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 8px;
-  padding: 10px 20px;
-  background: rgba(40, 200, 64, 0.1);
-  border: 1px solid rgba(40, 200, 64, 0.25);
+  justify-content: center;
+  min-width: 140px;
+  padding: 11px 20px;
+  background: rgba(255, 255, 255, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.16);
   border-radius: var(--radius);
-  color: #28c840;
-  font-family: var(--font-mono);
-  font-size: 0.82rem;
+  color: #171717;
+  font-family: var(--font-sans);
+  font-size: 0.9rem;
+  font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
   position: relative;
@@ -542,7 +533,7 @@ body {
   content: '';
   position: absolute;
   inset: 0;
-  background: rgba(40, 200, 64, 0.05);
+  background: rgba(255, 255, 255, 0.08);
   opacity: 0;
   transition: opacity 0.25s ease;
 }
@@ -552,10 +543,10 @@ body {
 }
 
 .terminal-submit-btn:hover:not(:disabled) {
-  background: rgba(40, 200, 64, 0.18);
-  border-color: rgba(40, 200, 64, 0.4);
+  background: #ffffff;
+  border-color: rgba(255, 255, 255, 0.36);
   transform: translateY(-1px);
-  box-shadow: 0 4px 16px rgba(40, 200, 64, 0.15);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
 .terminal-submit-btn:active:not(:disabled) {
@@ -571,12 +562,6 @@ body {
 .terminal-btn-text {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-}
-
-.terminal-chevron {
-  color: rgba(40, 200, 64, 0.6);
-  font-size: 0.9rem;
 }
 
 .terminal-loading {
@@ -614,8 +599,8 @@ body {
 /* Terminal responsive */
 @media (max-width: 640px) {
   .terminal-line {
-    flex-wrap: wrap;
-    gap: 4px 10px;
+    gap: 8px;
+    margin-bottom: 16px;
   }
   .terminal-body {
     padding: 16px 16px 20px;

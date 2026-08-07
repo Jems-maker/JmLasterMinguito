@@ -66,64 +66,65 @@ export default function Contact() {
           </a>
         </div>
 
-        {/* macOS Dark Mode Terminal */}
+        {/* macOS-inspired contact window */}
         <div className="mt-16 reveal-sm" style={{ transitionDelay: "0.4s" }}>
           <div className="terminal-window">
-            {/* Title Bar */}
             <div className="terminal-titlebar">
               <div className="terminal-dots" role="img" aria-label="Window controls">
                 <span className="terminal-dot terminal-dot-red" title="Close" />
                 <span className="terminal-dot terminal-dot-yellow" title="Minimize" />
                 <span className="terminal-dot terminal-dot-green" title="Maximize" />
               </div>
-              <span className="terminal-title">contact.sh — bash</span>
+              <span className="terminal-title">Contact Form</span>
             </div>
 
-            {/* Terminal Body */}
             <div className="terminal-body">
               <form onSubmit={handleSubmit}>
                 <div className="terminal-line">
-                  <span className="terminal-prompt">$</span>
-                  <span className="terminal-label">./name</span>
+                  <label className="terminal-label" htmlFor="contact-name">
+                    Name
+                  </label>
                   <input
+                    id="contact-name"
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    placeholder="your name"
+                    placeholder="Enter your full name"
                     className="terminal-input"
                     required
-                    aria-label="Name"
                   />
                 </div>
 
                 <div className="terminal-line">
-                  <span className="terminal-prompt">$</span>
-                  <span className="terminal-label">./email</span>
+                  <label className="terminal-label" htmlFor="contact-email">
+                    Email
+                  </label>
                   <input
+                    id="contact-email"
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder="your@email.com"
+                    placeholder="Enter your email address"
                     className="terminal-input"
                     required
-                    aria-label="Email"
                   />
                 </div>
 
-                <div className="terminal-line" style={{ alignItems: "flex-start" }}>
-                  <span className="terminal-prompt" style={{ marginTop: "4px" }}>$</span>
-                  <span className="terminal-label">./message</span>
+                <div className="terminal-line">
+                  <label className="terminal-label" htmlFor="contact-message">
+                    Message
+                  </label>
                   <textarea
+                    id="contact-message"
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder="tell me about your project"
+                    placeholder="Tell me about your project or inquiry"
                     className="terminal-textarea"
                     rows={4}
                     required
-                    aria-label="Message"
                   />
                 </div>
 
@@ -136,17 +137,16 @@ export default function Contact() {
                     {isSubmitting ? (
                       <span className="terminal-loading">
                         <span className="terminal-loading-dot" />
-                        <span>sending...</span>
+                        <span>Sending...</span>
                       </span>
                     ) : submitted ? (
                       <span className="terminal-success">
                         <CheckIcon />
-                        <span>✓ message sent!</span>
+                        <span>Message sent</span>
                       </span>
                     ) : (
                       <span className="terminal-btn-text">
-                        <span className="terminal-chevron">❯</span>
-                        <span>./send_message.sh</span>
+                        <span>Send Message</span>
                       </span>
                     )}
                   </button>

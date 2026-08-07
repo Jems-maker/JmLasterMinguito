@@ -74,15 +74,16 @@ export default function Hero() {
               </div>
               <div className="flex gap-4 flex-wrap justify-center md:justify-start">
                 <a
-                  href="/cv.pdf"
+                  href="/JLM_RESUME.pdf"
                   target="_blank"
+                  rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 px-[22px] py-2.5 rounded-lg text-sm font-medium no-underline transition-all duration-200 bg-transparent text-[var(--color-text)] border border-[var(--color-border)] hover:bg-[var(--color-bg-hover)] hover:border-[var(--color-border-hover)] hover:-translate-y-[1px]"
                 >
                   <LucideIcon name="eye" />
                   View CV
                 </a>
                 <a
-                  href="/cv.pdf"
+                  href="/JLM_RESUME.pdf"
                   download="Jm_Laster_Minguito_CV.pdf"
                   className="inline-flex items-center gap-2 px-[22px] py-2.5 rounded-lg text-sm font-medium no-underline transition-all duration-200 bg-transparent text-[var(--color-text)] border border-[var(--color-border)] hover:bg-[var(--color-bg-hover)] hover:border-[var(--color-border-hover)] hover:-translate-y-[1px]"
                 >
