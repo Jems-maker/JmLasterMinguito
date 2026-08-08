@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import ViewsCounter from "./ViewsCounter";
 
 const navLinks = [
   { href: "#home", label: "Home" },
@@ -84,8 +83,6 @@ export default function Navbar() {
           </ul>
 
           <div className="flex items-center gap-2.5">
-            <ViewsCounter />
-
             {/* Hamburger */}
             <button
               onClick={() => setMobileOpen(!mobileOpen)}

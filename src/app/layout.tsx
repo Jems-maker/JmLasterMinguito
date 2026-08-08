@@ -34,6 +34,9 @@ export default function RootLayout({
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable}`}
     >
+      <head>
+        <link href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap" rel="stylesheet" />
+      </head>
       <body className="bg-[var(--color-bg)] text-[var(--color-text)] overflow-x-hidden">
         <Loader />
         <Navbar />

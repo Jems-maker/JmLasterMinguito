@@ -33,7 +33,7 @@ export default function Hero() {
   return (
     <section
       id="home"
-      className="hero-section min-h-screen flex items-center pt-20 md:pt-[80px]"
+      className="hero-section flex items-start pt-20 md:pt-[80px]"
     >
       <div className="max-w-[1000px] mx-auto px-6 md:px-6 w-full">
         <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-10">
@@ -52,11 +52,6 @@ export default function Hero() {
               IT Student &amp; Developer
             </p>
 
-            <p className="text-base text-[var(--color-text-muted)] mb-8 min-h-[1.6rem]">
-              Building <TypedText />
-              <span className="cursor">|</span>
-            </p>
-
             <div className="flex flex-col gap-4 items-center md:items-start">
               <div className="flex gap-4 flex-wrap justify-center md:justify-start">
                 <a
@@ -67,7 +62,7 @@ export default function Hero() {
                 </a>
                 <a
                   href="#contact"
-                  className="inline-flex items-center gap-2 px-[22px] py-2.5 rounded-lg text-sm font-medium no-underline transition-all duration-200 bg-transparent text-[var(--color-text)] border border-[var(--color-border)] hover:bg-[var(--color-bg-hover)] hover:border-[var(--color-border-hover)] hover:-translate-y-[1px]"
+                  className="inline-flex items-center gap-2 px-[22px] py-2.5 rounded-md text-sm font-medium no-underline transition-all duration-200 bg-transparent text-[var(--color-text)] border-2 border-[var(--color-border)] hover:bg-[var(--color-bg-hover)] hover:border-[var(--color-border-hover)] hover:-translate-y-[1px]"
                 >
                   Contact Me
                 </a>
@@ -77,7 +72,7 @@ export default function Hero() {
                   href="/JLM_RESUME.pdf"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-2 px-[22px] py-2.5 rounded-lg text-sm font-medium no-underline transition-all duration-200 bg-transparent text-[var(--color-text)] border border-[var(--color-border)] hover:bg-[var(--color-bg-hover)] hover:border-[var(--color-border-hover)] hover:-translate-y-[1px]"
+                  className="inline-flex items-center gap-2 px-[22px] py-2.5 rounded-md text-sm font-medium no-underline transition-all duration-200 bg-transparent text-[var(--color-text)] border-2 border-[var(--color-border)] hover:bg-[var(--color-bg-hover)] hover:border-[var(--color-border-hover)] hover:-translate-y-[1px]"
                 >
                   <LucideIcon name="eye" />
                   View CV
@@ -85,7 +80,7 @@ export default function Hero() {
                 <a
                   href="/JLM_RESUME.pdf"
                   download="Jm_Laster_Minguito_CV.pdf"
-                  className="inline-flex items-center gap-2 px-[22px] py-2.5 rounded-lg text-sm font-medium no-underline transition-all duration-200 bg-transparent text-[var(--color-text)] border border-[var(--color-border)] hover:bg-[var(--color-bg-hover)] hover:border-[var(--color-border-hover)] hover:-translate-y-[1px]"
+                  className="inline-flex items-center gap-2 px-[22px] py-2.5 rounded-md text-sm font-medium no-underline transition-all duration-200 bg-transparent text-[var(--color-text)] border-2 border-[var(--color-border)] hover:bg-[var(--color-bg-hover)] hover:border-[var(--color-border-hover)] hover:-translate-y-[1px]"
                 >
                   <LucideIcon name="download" />
                   Download CV
@@ -121,5 +116,3 @@ function LucideIcon({ name, size = 18 }: { name: string; size?: number }) {
   return <span dangerouslySetInnerHTML={{ __html: icons[name] || "" }} />;
 }
 
-// Import the TypedText component
-import TypedText from "./TypedText";
