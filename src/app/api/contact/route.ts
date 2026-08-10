@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { Resend } from "resend";
+import nodemailer from "nodemailer";
 
 interface ContactRequest {
   name: string;
@@ -111,32 +111,32 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
-  // CAPTCHA verified. Now send the email via Resend.
-  const resendApiKey = process.env.RESEND_API_KEY;
-  if (!resendApiKey) {
+  // CAPTCHA verified. Now send the email via Gmail SMTP.
+  const gmailUser = process.env.GMAIL_USER;
+  const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;
+  if (!gmailUser || !gmailAppPassword) {
     return NextResponse.json(
       { success: false, message: "Server configuration error." },
       { status: 500 }
     );
   }
 
-  const resend = new Resend(resendApiKey);
+  const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+      user: gmailUser,
+      pass: gmailAppPassword,
+    },
+  });
 
   try {
-    const { error } = await resend.emails.send({
-      from: "onboarding@resend.dev",
-      to: [TO_EMAIL],
+    await transporter.sendMail({
+      from: gmailUser,
+      to: TO_EMAIL,
+      replyTo: body.email.trim(),
       subject: `New contact message from ${body.name.trim()}`,
       text: `Name: ${body.name.trim()}\nEmail: ${body.email.trim()}\n\nMessage:\n${body.message.trim()}`,
-      replyTo: body.email.trim(),
     });
-
-    if (error) {
-      return NextResponse.json(
-        { success: false, message: "Could not send your message. Please try again." },
-        { status: 500 }
-      );
-    }
   } catch {
     return NextResponse.json(
       { success: false, message: "Could not send your message. Please try again." },
