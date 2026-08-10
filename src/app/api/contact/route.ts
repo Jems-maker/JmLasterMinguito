@@ -105,8 +105,16 @@ export async function POST(request: Request): Promise<Response> {
   }
 
   if (!recaptchaResult.success) {
+    // Include Google's diagnostic error codes for the site owner
+    // (e.g. "invalid-domain" means the Site Key isn't authorized for this domain).
+    // These are safe diagnostic codes, not secrets.
+    const errorCodes = recaptchaResult["error-codes"]?.join(", ");
     return NextResponse.json(
-      { success: false, message: "reCAPTCHA verification failed." },
+      {
+        success: false,
+        message: "reCAPTCHA verification failed.",
+        ...(errorCodes ? { detail: errorCodes } : {}),
+      },
       { status: 403 }
     );
   }
