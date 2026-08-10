@@ -68,7 +68,7 @@ export async function POST(request: Request): Promise<Response> {
   const secretKey = process.env.RECAPTCHA_SECRET_KEY;
   if (!secretKey) {
     return NextResponse.json(
-      { success: false, message: "Server configuration error." },
+      { success: false, message: "reCAPTCHA is not configured." },
       { status: 500 }
     );
   }
@@ -116,7 +116,7 @@ export async function POST(request: Request): Promise<Response> {
   const gmailAppPassword = process.env.GMAIL_APP_PASSWORD;
   if (!gmailUser || !gmailAppPassword) {
     return NextResponse.json(
-      { success: false, message: "Server configuration error." },
+      { success: false, message: "Email service is not configured." },
       { status: 500 }
     );
   }
