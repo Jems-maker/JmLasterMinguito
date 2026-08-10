@@ -142,7 +142,7 @@ export async function POST(request: Request): Promise<Response> {
       from: gmailUser,
       to: TO_EMAIL,
       replyTo: body.email.trim(),
-      subject: `New contact message from ${body.name.trim()}`,
+      subject: `New Client message from ${body.name.trim()}`,
       text: `Name: ${body.name.trim()}\nEmail: ${body.email.trim()}\n\nMessage:\n${body.message.trim()}`,
     });
   } catch {

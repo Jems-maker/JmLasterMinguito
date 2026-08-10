@@ -1,14 +1,29 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   const [captchaError, setCaptchaError] = useState("");
   const captchaRef = useRef<ReCAPTCHA>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setShowModal(false);
+    };
+    if (showModal) {
+      document.addEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "hidden";
+    }
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = "";
+    };
+  }, [showModal]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -47,6 +62,7 @@ export default function Contact() {
       }
 
       setSubmitted(true);
+      setShowModal(true);
       setFormData({ name: "", email: "", message: "" });
       captchaRef.current?.reset();
       setTimeout(() => setSubmitted(false), 3000);
@@ -211,6 +227,35 @@ export default function Contact() {
           </div>
         </div>
       </div>
+
+      {showModal ? (
+        <div
+          className="modal-overlay"
+          onClick={() => setShowModal(false)}
+          role="dialog"
+          aria-modal="true"
+          aria-labelledby="contact-modal-title"
+        >
+          <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+            <div className="modal-icon">
+              <CheckIcon />
+            </div>
+            <h3 id="contact-modal-title" className="modal-title">
+              Message Sent Successfully!
+            </h3>
+            <p className="modal-description">
+              Thank you for reaching out! Just wait for Jm's response — he'll get back to you as soon as possible.
+            </p>
+            <button
+              type="button"
+              className="modal-close-btn"
+              onClick={() => setShowModal(false)}
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      ) : null}
     </section>
   );
 }
