@@ -1,26 +1,61 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
+import ReCAPTCHA from "react-google-recaptcha";
 
 export default function Contact() {
   const [formData, setFormData] = useState({ name: "", email: "", message: "" });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [captchaError, setCaptchaError] = useState("");
+  const captchaRef = useRef<ReCAPTCHA>(null);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const siteKey = process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY;
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
+    setCaptchaError("");
+    const captchaToken = captchaRef.current?.getValue();
+
+    if (!captchaToken) {
+      setCaptchaError("Please complete the reCAPTCHA.");
+      return;
+    }
+
     setIsSubmitting(true);
-    setTimeout(() => {
-      setIsSubmitting(false);
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...formData, captchaToken }),
+      });
+
+      const result = (await response.json()) as { success: boolean; message: string };
+
+      if (!response.ok || !result.success) {
+        setCaptchaError(result.message || "Something went wrong. Please try again.");
+        captchaRef.current?.reset();
+        return;
+      }
+
       setSubmitted(true);
       setFormData({ name: "", email: "", message: "" });
+      captchaRef.current?.reset();
       setTimeout(() => setSubmitted(false), 3000);
-    }, 1200);
+    } catch {
+      setCaptchaError("Something went wrong. Please try again.");
+      captchaRef.current?.reset();
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -127,6 +162,22 @@ export default function Contact() {
                     required
                   />
                 </div>
+
+                <div className="terminal-captcha">
+                  {siteKey ? (
+                    <ReCAPTCHA
+                      ref={captchaRef}
+                      sitekey={siteKey}
+                      theme="dark"
+                    />
+                  ) : null}
+                </div>
+
+                {captchaError ? (
+                  <p className="terminal-error" role="alert">
+                    {captchaError}
+                  </p>
+                ) : null}
 
                 <div className="terminal-button-row">
                   <button
