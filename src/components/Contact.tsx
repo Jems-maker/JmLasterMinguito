@@ -170,7 +170,11 @@ export default function Contact() {
                       sitekey={siteKey}
                       theme="dark"
                     />
-                  ) : null}
+                  ) : (
+                    <p className="terminal-error" role="alert">
+                      reCAPTCHA is not configured.
+                    </p>
+                  )}
                 </div>
 
                 {captchaError ? (

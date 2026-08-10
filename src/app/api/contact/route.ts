@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import { Resend } from "resend";
 
 interface ContactRequest {
   name: string;
@@ -15,6 +16,7 @@ interface RecaptchaResponse {
 }
 
 const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const TO_EMAIL = "jmlasterminguito@gmail.com";
 
 function validateContact(data: ContactRequest): string | null {
   const name = data.name?.trim();
@@ -109,8 +111,39 @@ export async function POST(request: Request): Promise<Response> {
     );
   }
 
-  // CAPTCHA verified. The contact message is accepted.
-  // Email delivery (e.g. Resend/Nodemailer) can be wired in here later.
+  // CAPTCHA verified. Now send the email via Resend.
+  const resendApiKey = process.env.RESEND_API_KEY;
+  if (!resendApiKey) {
+    return NextResponse.json(
+      { success: false, message: "Server configuration error." },
+      { status: 500 }
+    );
+  }
+
+  const resend = new Resend(resendApiKey);
+
+  try {
+    const { error } = await resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: [TO_EMAIL],
+      subject: `New contact message from ${body.name.trim()}`,
+      text: `Name: ${body.name.trim()}\nEmail: ${body.email.trim()}\n\nMessage:\n${body.message.trim()}`,
+      replyTo: body.email.trim(),
+    });
+
+    if (error) {
+      return NextResponse.json(
+        { success: false, message: "Could not send your message. Please try again." },
+        { status: 500 }
+      );
+    }
+  } catch {
+    return NextResponse.json(
+      { success: false, message: "Could not send your message. Please try again." },
+      { status: 500 }
+    );
+  }
+
   return NextResponse.json(
     { success: true, message: "Message sent." },
     { status: 200 }
