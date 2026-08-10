@@ -703,6 +703,17 @@ body {
   box-shadow: none;
 }
 
+/* Mobile: push modal below the floating navbar */
+@media (max-width: 640px) {
+  .modal-overlay {
+    align-items: flex-start;
+    padding-top: 88px;
+  }
+  .modal-card {
+    max-width: 100%;
+  }
+}
+
 @keyframes modalFadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
