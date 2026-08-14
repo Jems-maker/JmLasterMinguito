@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 const navLinks = [
   { href: "#home", label: "Home" },
@@ -15,20 +15,31 @@ const navLinks = [
 export default function Navbar() {
   const navbarRef = useRef<HTMLElement>(null);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const lastScrollY = useRef(0);
 
   useEffect(() => {
     const navbar = navbarRef.current;
     if (!navbar) return;
 
     const handleScroll = () => {
-      if (window.scrollY > 10) {
+      const currentScrollY = window.scrollY;
+
+      // Auto-hide navbar when scrolling down, show when scrolling up
+      if (currentScrollY > lastScrollY.current && currentScrollY > 120) {
+        navbar.classList.add("nav-hidden");
+      } else {
+        navbar.classList.remove("nav-hidden");
+      }
+      lastScrollY.current = currentScrollY;
+
+      if (currentScrollY > 10) {
         navbar.classList.add("scrolled");
       } else {
         navbar.classList.remove("scrolled");
       }
       // Active nav link tracking
       const sections = navLinks.map((l) => l.href.slice(1));
-      const scrollY = window.scrollY + 100;
+      const scrollY = currentScrollY + 100;
       sections.forEach((id) => {
         const el = document.getElementById(id);
         const link = navbar.querySelector(`a[href="#${id}"]`);
@@ -42,8 +53,18 @@ export default function Navbar() {
       });
     };
 
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Show navbar when mobile menu opens
+  const handleMenuToggle = useCallback(() => {
+    setMobileOpen((prev) => {
+      if (!prev && navbarRef.current) {
+        navbarRef.current.classList.remove("nav-hidden");
+      }
+      return !prev;
+    });
   }, []);
 
   // Close mobile menu on link click
@@ -85,7 +106,7 @@ export default function Navbar() {
           <div className="flex items-center gap-2.5">
             {/* Hamburger */}
             <button
-              onClick={() => setMobileOpen(!mobileOpen)}
+              onClick={handleMenuToggle}
               className="md:hidden bg-transparent border-none cursor-pointer text-[var(--color-text)] flex items-center p-1"
               aria-label="Menu"
             >
