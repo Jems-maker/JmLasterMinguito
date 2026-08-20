@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import VerifiedBadge from "./VerifiedBadge";
 
 export default function Hero() {
   const profileRef = useRef<HTMLDivElement>(null);
@@ -45,7 +46,11 @@ export default function Hero() {
             </div>
 
             <h1 className="font-[family-name:var(--font-sans)] text-[clamp(2rem,5vw,3rem)] font-bold tracking-tighter leading-[1.1] mb-2">
-              Jm Laster D. Minguito
+              <span>Jm Laster D. </span>
+              <span className="inline-flex items-center whitespace-nowrap">
+                Minguito
+                <VerifiedBadge />
+              </span>
             </h1>
 
             <p className="text-[1.1rem] text-[var(--color-text-muted)] mb-6 tracking-tight">
